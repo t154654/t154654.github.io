@@ -1,7 +1,9 @@
 name: Deploy to GitHub Pages
 
-# Deliberately manual: review all files and repository visibility before uploading.
+# This repository contains reviewed, public website source only.
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:

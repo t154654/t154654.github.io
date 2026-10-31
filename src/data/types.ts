@@ -21,12 +21,15 @@ export interface Project {
   title: Localized
   subtitle: Localized
   description: Localized
+  question: Localized
   status: Localized
   tags: string[]
   methods: Localized<string[]>
   results: Localized<string[]>
   limitations: Localized<string[]>
   evidence: Localized<string[]>
+  nextSteps: Localized<string[]>
+  relatedArticles: string[]
   github?: string
   url?: string
   metrics?: { label: Localized; value: string }[]
@@ -38,5 +41,6 @@ export interface Article {
   title: Localized
   description: Localized
   tags: string[]
+  projectSlugs: string[]
   content: Localized
 }

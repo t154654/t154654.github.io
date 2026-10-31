@@ -14,12 +14,10 @@ import {
 import type { Locale } from '../data/types'
 import { profile } from '../data/profile'
 import { projects } from '../data/projects'
-import { articles } from '../data/writing'
 import { ui } from '../data/ui'
-import { href } from '../lib/site'
-import { tagLabel } from '../lib/tags'
 import { ResearchVisual } from '../components/ResearchVisual'
 import { ProjectCard } from '../components/ProjectCard'
+import { WritingList } from '../components/WritingList'
 
 function SectionHeading({
   eyebrow,
@@ -296,33 +294,7 @@ export function Home({ locale }: { locale: Locale }) {
           title={t.writingTitle}
           intro={t.writingIntro}
         />
-        <div className="writing-list">
-          {articles.map((article, i) => (
-            <article className="writing-row" key={article.slug}>
-              <span className="writing-number">0{i + 1}</span>
-              <div>
-                <p className="writing-type">
-                  {t.note}
-                  <span> / </span>
-                  {tagLabel(article.tags[0], locale)}
-                </p>
-                <h3>
-                  <a href={href(`${locale}/writing/${article.slug}/`)}>
-                    {article.title[locale]}
-                  </a>
-                </h3>
-                <p>{article.description[locale]}</p>
-              </div>
-              <a
-                className="writing-arrow"
-                href={href(`${locale}/writing/${article.slug}/`)}
-                aria-label={`${t.read}: ${article.title[locale]}`}
-              >
-                <ArrowUpRight size={23} />
-              </a>
-            </article>
-          ))}
-        </div>
+        <WritingList locale={locale} />
       </section>
 
       <section id="contact" className="contact-section">

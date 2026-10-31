@@ -26,7 +26,7 @@ npm run preview     # 预览 dist/ 生产产物
 
 已有 `package-lock.json` 时，持续集成或重新安装优先使用 `npm ci`。构建结果位于 `dist/`，中间服务端渲染产物位于 `work/ssr/`，均不纳入 Git。
 
-当前构建生成 **15 个预渲染页面**（根首页及 14 个语言页面），另有 `404.html`。`npm run verify:build` 检查静态正文、页面语言、单一主标题、元数据、站内链接、实验指标说明和公开资源；它会按相同环境配置检查部署子路径。验证前须先完成构建，并保持 `VITE_BASE_PATH`、`SITE_URL` 与构建时一致。
+当前构建生成 **17 个预渲染页面**（根首页及 16 个语言页面），另有 `404.html`。`npm run verify:build` 检查静态正文、页面语言、单一主标题、元数据、站内链接、目录锚点、实验指标说明和公开资源；它会按相同环境配置检查部署子路径，并验证 canonical、双语替代链接及站点地图。验证前须先完成构建，并保持 `VITE_BASE_PATH`、`SITE_URL` 与构建时一致。
 
 ## 页面与功能
 
@@ -67,7 +67,7 @@ npm run preview     # 预览 dist/ 生产产物
 
 1. 在 `src/content/` 新建一对文件，例如 `experiment-notes.en.md` 和 `experiment-notes.zh.md`。
 2. 在 `src/data/writing.ts` 中使用 Vite `?raw` 导入两个文件，并向 `articles` 添加一个唯一 slug 的条目。
-3. 同时提供标题、简介、标签及双语正文。沿用现有条目写法；文章列表和两种语言的静态详情页会自动生成。
+3. 同时提供标题、简介、标签及双语正文；`projectSlugs` 填写相关项目的 slug（无关联时为 `[]`）。沿用现有条目写法，文章列表和两种语言的静态详情页会自动生成。
 4. 运行 `npm run check`、`npm run build`、`npm run verify:build`，检查正文、表格、链接和手机布局。
 
 正文示例（标题由文章索引生成，正文从段落或二级标题开始）：
@@ -83,6 +83,10 @@ Explain the question, method, evidence and limitations.
 
 当前文章为方法说明性质的笔记，不代表已发表研究或未提供的实验结果。Markdown 不支持执行 JSX；如需新组件，应在应用代码中明确实现。
 
+写作区支持关键词搜索和主题筛选。文章详情自动生成阅读时间、二级/三级标题目录和唯一锚点，支持重复标题、中文标题与 Setext 标题；代码围栏中的文字不会进入目录。代码块可复制，表格可横向滚动。正文建议从 `##` 开始，页面主标题由文章索引生成。文章的 `projectSlugs` 与项目的 `relatedArticles` 用于双向连接笔记和项目，均只填写站内真实 slug。
+
+项目配置中的 `question` 用于说明研究或工程问题，`nextSteps` 专门记录未来计划。前台会将计划与已确认结果分开显示；不要把计划中的实验写成已经完成的结果。
+
 ## 配置正式网址与 SEO
 
 复制 `.env.example` 为 `.env.local`，设置公开构建配置；也可以直接在持续集成或部署平台设置同名环境变量。`VITE_BASE_PATH` 是以 `/` 开头和结尾的部署路径；`SITE_URL` 是正式部署根 URL，GitHub 项目 Pages 需要包含仓库路径。系统环境变量优先于本地文件。
@@ -93,20 +97,20 @@ Explain the question, method, evidence and limitations.
 | GitHub 用户或组织主页 | `/`            | 实际 Pages HTTPS 根 URL          |
 | GitHub 项目 Pages     | `/仓库名/`     | 实际 Pages HTTPS URL，包含仓库名 |
 
-未配置 `SITE_URL` 时，页面加入 `noindex, nofollow`，`robots.txt` 设置 `Disallow: /`，`sitemap.xml` 保留空的 URL 集合，避免生成虚构域名。设置真实网址后重新构建，当前 sitemap 包含 **14 个中英文页面 URL**，根首页不重复列入。检查 `dist/robots.txt`、`dist/sitemap.xml` 及页面源码中的 canonical / Open Graph 信息；也可运行 `npm run verify:build` 核对构建结果。SEO 只能提供抓取基础，不保证收录或搜索排名。
+未配置 `SITE_URL` 时，页面加入 `noindex, nofollow`，`robots.txt` 设置 `Disallow: /`，`sitemap.xml` 保留空的 URL 集合，避免生成虚构域名。设置真实网址后重新构建，当前 sitemap 包含 **16 个中英文页面 URL**，根首页不重复列入。检查 `dist/robots.txt`、`dist/sitemap.xml` 及页面源码中的 canonical / Open Graph 信息；也可运行 `npm run verify:build` 核对构建结果。SEO 只能提供抓取基础，不保证收录或搜索排名。
 
 环境变量为构建时配置，修改后需要重新构建。任何 `VITE_` 变量都可能进入浏览器，**不得放置 Together/OpenAI 等 API 密钥**。
 
 ## 部署到 GitHub Pages
 
-提供的 `.github/workflows/pages.yml` **仅支持手动触发**，不会在 push 时自动发布。
+提供的 `.github/workflows/pages.yml` 会在 **`main` 分支收到 push 时自动检查并部署**，也支持手动触发。它只发布当前网站的静态构建产物。
 
 1. 先检查待上传内容，只将可以公开的网页代码与资产推送到你选定的仓库。研究源码、实验日志、数据及密钥不属于本网站的必需内容。
 2. 仓库 **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**。
 3. 进入 **Actions → Deploy to GitHub Pages → Run workflow**。工作流安装锁定依赖、执行检查、从 Pages 配置读取真实 URL 与子路径、构建并发布 `dist/`。
 4. 以工作流成功结果和实际访问验证部署：检查中英首页、项目和文章深链刷新、静态资源、主题与语言切换。
 
-本项目没有执行远程发布；工作流文件本身不代表已经部署。首次运行可能需要在仓库设置中启用 Pages 并允许工作流使用 `github-pages` 环境。
+工作流文件本身不代表已经部署，需以工作流成功状态和实际访问结果为准。首次运行需要在仓库设置中启用 Pages，并允许工作流使用 `github-pages` 环境。已配置过但无法使用的自定义域名，应先在 Pages 设置中解除绑定，再运行部署；这样构建会读取正确的默认网址。之后可以再配置真实有效的自定义域名。
 
 ## 部署到 Vercel
 
@@ -121,7 +125,7 @@ Explain the question, method, evidence and limitations.
 
 ```text
 .
-├── .github/workflows/pages.yml  # 手动 GitHub Pages 发布
+├── .github/workflows/pages.yml  # main 自动部署，也支持手动发布
 ├── public/
 │   ├── favicon.svg             # 站点图标
 │   ├── og-image.svg            # 分享图矢量源
@@ -173,6 +177,6 @@ git commit -m "feat: build bilingual academic portfolio"
 
 ## English quick start
 
-Run `npm install`, then `npm run dev` with Node.js 24 LTS (or Node.js 22.x, version 22.13 or later). Before publishing, run `npm run check`, `npm run build`, then `npm run verify:build` with matching environment configuration. The current build contains 15 prerendered pages plus a 404 page. Edit bilingual profile data in `src/data/profile.ts`, project data in `src/data/projects.ts`, and Markdown articles in `src/content/` with entries in `src/data/writing.ts`. Unknown personal fields are `null` and hidden in the UI.
+Run `npm install`, then `npm run dev` with Node.js 24 LTS (or Node.js 22.x, version 22.13 or later). Before publishing, run `npm run check`, `npm run build`, then `npm run verify:build` with matching environment configuration. The current build contains 17 prerendered pages plus a 404 page. Edit bilingual profile data in `src/data/profile.ts`, project data in `src/data/projects.ts`, and Markdown articles in `src/content/` with entries in `src/data/writing.ts`. Unknown personal fields are `null` and hidden in the UI.
 
-Set `VITE_BASE_PATH` for your deployment path and `SITE_URL` to the real deployed root URL before an indexable production build. Without `SITE_URL`, the build adds noindex metadata and a disallow rule, and writes an empty sitemap. With it configured, the current sitemap contains 14 localized page URLs. GitHub Pages publishing is manual via the included Actions workflow; Vercel uses the included configuration. No deployment or upload is performed by local development or build commands.
+Set `VITE_BASE_PATH` for your deployment path and `SITE_URL` to the real deployed root URL before an indexable production build. Without `SITE_URL`, the build adds noindex metadata and a disallow rule, and writes an empty sitemap. With it configured, the current sitemap contains 16 localized page URLs. GitHub Pages publishing runs on main pushes and can also be triggered manually via the included Actions workflow; Vercel uses the included configuration. No deployment or upload is performed by local development or build commands.

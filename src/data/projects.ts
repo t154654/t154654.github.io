@@ -14,6 +14,10 @@ export const projects: Project[] = [
       en: 'An ongoing exploration of LLM-guided symbolic regression: candidate equations, search strategies, and the evidence needed to evaluate them.',
       zh: '进行中的 LLM 引导符号回归探索，关注候选公式、搜索策略，以及评估这些方法所需的证据。',
     },
+    question: {
+      en: 'How can language-model candidate generation and structured search support equation discovery, while keeping the path from a proposed expression to its evaluation open to inspection?',
+      zh: '语言模型生成候选公式与结构化搜索如何支持科学公式发现，并让候选表达式从提出到评估的过程能够被检查？',
+    },
     status: { en: 'Research in progress', zh: '研究探索中' },
     tags: ['LLM', 'Symbolic Regression', 'MCTS', 'Reproducibility'],
     methods: {
@@ -54,6 +58,19 @@ export const projects: Project[] = [
         '关注的证据包括候选公式、motif 结构、搜索日志与可复现性检查。此处仅介绍这些证据类型，不分发未公开代码或实验数据。',
       ],
     },
+    nextSteps: {
+      en: [
+        'Future work: define comparable search budgets and evaluation criteria before comparing candidate-generation and MCTS-related search variants.',
+        'Future work: connect candidate equations, motif observations, evaluation records, and search decisions in a consistent experiment record.',
+        'Future work: repeat selected configurations and inspect failed or unstable runs before drawing conclusions about a search strategy.',
+      ],
+      zh: [
+        '后续计划：先明确可比较的搜索预算与评估标准，再对候选生成方式和 MCTS 相关搜索方案进行对照验证。',
+        '后续计划：以统一实验记录连接候选公式、motif 观察、评估结果与搜索决策，使结构证据能够追溯到具体运行。',
+        '后续计划：重复运行选定配置，检查失败或不稳定的运行，再判断搜索策略的效果与局限。',
+      ],
+    },
+    relatedArticles: ['reproducible-search', 'evaluation-boundaries'],
     visual: 'equation',
   },
   {
@@ -67,6 +84,10 @@ export const projects: Project[] = [
     description: {
       en: 'Environment setup, Together API adaptation, and reproduction experiments for a Sentry baseline in AppWorld.',
       zh: '完成 AppWorld 数据及 Sentry 基线环境配置，并开展 Together API 适配与复现实验。',
+    },
+    question: {
+      en: 'What is needed to reproduce a tool-using agent baseline in AppWorld, and how should data readiness, API compatibility, and actual task outcomes be evaluated separately?',
+      zh: '在 AppWorld 中复现工具调用智能体基线需要哪些条件？如何分别验证数据就绪、API 兼容性与真实任务完成情况？',
     },
     status: { en: 'Reproduction in progress', zh: '复现实验中' },
     tags: ['LLM Agent', 'Tool Use', 'AppWorld', 'Together API'],
@@ -119,6 +140,19 @@ export const projects: Project[] = [
         value: '147/147',
       },
     ],
+    nextSteps: {
+      en: [
+        'Future work: complete end-to-end checks of Together API requests, responses, and tool interactions before interpreting agent evaluation runs.',
+        'Future work: record task identifiers, model settings, execution traces, and task outcomes, with environment and API failures explicitly labeled.',
+        'Future work: evaluate the baseline on an explicitly defined task set with a stated success criterion, and report agent outcomes independently of the 147/147 data integrity check.',
+      ],
+      zh: [
+        '后续计划：完成 Together API 请求、响应与工具交互的端到端检查，再解释智能体评估运行的结果。',
+        '后续计划：记录任务标识、模型设置、执行轨迹和任务结果，并明确标注环境故障与 API 故障。',
+        '后续计划：在明确定义的任务集合与成功判定标准下评估基线，将智能体任务结果与 147/147 数据完整性检查分别报告。',
+      ],
+    },
+    relatedArticles: ['evaluation-boundaries', 'reproducible-search'],
     visual: 'agent',
   },
   {
@@ -132,6 +166,10 @@ export const projects: Project[] = [
     description: {
       en: 'A PyTorch classification project comparing CNN and MLP models, optimizers, normalization, and regularization through ablation experiments.',
       zh: '基于 PyTorch 的图像分类项目，通过消融实验比较 CNN 与 MLP、优化器、归一化和正则化方法。',
+    },
+    question: {
+      en: 'How should the effects of model architecture, optimization, normalization, and regularization be compared without confusing validation-based model selection with test evaluation?',
+      zh: '如何比较模型结构、优化方法、归一化和正则化的影响，同时明确区分基于验证集的模型选择与测试集评估？',
     },
     status: { en: 'Experiment results available', zh: '已有实验结果' },
     tags: ['PyTorch', 'CNN', 'MLP', 'Ablation Studies'],
@@ -180,6 +218,19 @@ export const projects: Project[] = [
       },
       { label: { en: 'Test accuracy', zh: '测试集准确率' }, value: '71.34%' },
     ],
+    nextSteps: {
+      en: [
+        'Future work: consolidate the configuration and metric records for each ablation, including the data split, training settings, and the factor changed in each comparison.',
+        'Future work: repeat selected comparisons under documented conditions to assess run-to-run variation before attributing a difference to a particular method.',
+        'Future work: document model selection using validation results and the subsequent test evaluation separately; add per-ablation figures only when their records can be checked.',
+      ],
+      zh: [
+        '后续计划：整理各项消融的配置与指标记录，包括数据划分、训练设置，以及每项比较实际改变的因素。',
+        '后续计划：在记录清楚的条件下重复选定对照，评估多次运行的波动，再判断差异是否来自特定方法。',
+        '后续计划：分别说明依据验证集进行的模型选择与之后的测试评估，仅在记录可检查时补充各项消融的具体数值。',
+      ],
+    },
+    relatedArticles: ['cnn-ablation-notes', 'evaluation-boundaries'],
     visual: 'vision',
   },
   {
@@ -196,6 +247,10 @@ export const projects: Project[] = [
     description: {
       en: 'A game mod combining event systems, mission trees, scripting, and localization, with attention to version compatibility and community feedback.',
       zh: '结合事件系统、任务树、游戏脚本与本地化的游戏模组实践，同时关注版本兼容和社区反馈。',
+    },
+    question: {
+      en: 'How can events, mission trees, and localized content work as a coherent game system while remaining maintainable across game versions and community feedback?',
+      zh: '如何让事件、任务树与本地化内容组成连贯的游戏系统，并在游戏版本变动和社区反馈中保持可维护性？',
     },
     status: { en: 'Side project', zh: '个人兴趣项目' },
     tags: ['Game Scripting', 'Localization', 'Compatibility', 'EU IV'],
@@ -231,6 +286,19 @@ export const projects: Project[] = [
       ],
       zh: ['项目范围包括事件系统、任务树、脚本、本地化、版本兼容与社区反馈。'],
     },
+    nextSteps: {
+      en: [
+        'Future work: document intended event triggers and mission dependencies, then check representative paths for conflicting or unreachable conditions.',
+        'Future work: establish a compatibility checklist for supported game versions and review localization keys and displayed text alongside script changes.',
+        'Future work: turn reproducible community reports into documented regression checks before considering an issue resolved.',
+      ],
+      zh: [
+        '后续计划：整理预期事件触发条件与任务依赖，再检查代表性流程中是否存在冲突或无法到达的条件。',
+        '后续计划：为计划支持的游戏版本建立兼容性清单，并在脚本变更时同步检查本地化键与显示文本。',
+        '后续计划：将能够复现的社区反馈转化为有记录的回归检查，再确认问题是否已解决。',
+      ],
+    },
+    relatedArticles: [],
     visual: 'mod',
   },
 ]

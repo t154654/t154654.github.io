@@ -9,3 +9,6 @@ outputs/
 *.tsbuildinfo
 .DS_Store
 coverage/
+.playwright-cli/
+.playwright/
+output/playwright/
